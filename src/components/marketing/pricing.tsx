@@ -32,6 +32,9 @@ const Pricing = () => {
                         <p className="text-base md:text-lg text-center text-accent-foreground/80 mt-6">
                             Masa ve kullanıcı sayınıza göre ölçeklenir. Kurulum ücreti yok, istediğiniz ay çıkabilirsiniz.
                         </p>
+                        <p className="mt-3 text-sm text-muted-foreground">
+                            Fiyatlar ABD doları üzerindendir ve KDV hariçtir. Yıllık ödemede iki ay ücretsiz.
+                        </p>
                     </div>
                 </Container>
 
@@ -82,7 +85,7 @@ const Plan = ({ plan, billPlan }: { plan: PLAN, billPlan: Plan }) => {
                         value={billPlan === "monthly" ? plan.monthlyPrice : plan.annuallyPrice}
                         suffix={billPlan === "monthly" ? " /ay" : " /yıl"}
                         format={{
-                            currency: "TRY",
+                            currency: "USD",
                             style: "currency",
                             currencySign: "standard",
                             minimumFractionDigits: 0,
