@@ -4,12 +4,19 @@ import Container from "../global/container";
 
 const LanguageSupport = () => {
     return (
-        <div className="relative flex flex-col items-center justify-center max-w-5xl py-20 mx-auto">
+        <div className="relative mx-auto flex max-w-5xl flex-col items-center justify-center py-20">
             <Container>
-                <div className="flex flex-col items-center justify-center w-full max-w-3xl mx-auto text-center">
-                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-normal !leading-snug mb-6">
+                <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center text-center">
+                    <span className="rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-muted-foreground">
+                        Çok dilli menü
+                    </span>
+                    <h2 className="mt-5 font-heading text-2xl font-normal !leading-snug md:text-4xl lg:text-5xl">
                         Menünüz misafirin dilinde
                     </h2>
+                    <p className="mt-4 text-base text-muted-foreground md:text-lg">
+                        Misafir QR kodu okuttuğunda menü telefonunun diline göre açılır. Kalem adları,
+                        açıklamalar ve alerjen notları aynı kayıttan çevrilir, ayrı menü hazırlamanız gerekmez.
+                    </p>
                 </div>
             </Container>
 
