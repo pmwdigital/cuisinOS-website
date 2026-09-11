@@ -5,6 +5,7 @@ import Coverage from "@/components/marketing/coverage";
 import Companies from "@/components/marketing/companies";
 import CTA from "@/components/marketing/cta";
 import Features from "@/components/marketing/features";
+import GuestScreens from "@/components/marketing/guest-screens";
 import Fiscal from "@/components/marketing/fiscal";
 import Hero from "@/components/marketing/hero";
 import Integration from "@/components/marketing/integration";
@@ -21,6 +22,7 @@ const HomePage = () => {
             <div id="ozellikler" className="scroll-mt-24">
                 <Features />
             </div>
+            <GuestScreens />
             <div id="akis" className="scroll-mt-24">
                 <Journey />
             </div>
