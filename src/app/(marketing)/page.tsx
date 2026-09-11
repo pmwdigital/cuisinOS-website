@@ -8,6 +8,7 @@ import Features from "@/components/marketing/features";
 import Fiscal from "@/components/marketing/fiscal";
 import Hero from "@/components/marketing/hero";
 import Integration from "@/components/marketing/integration";
+import Journey from "@/components/marketing/journey";
 import LanguageSupport from "@/components/marketing/lang-support";
 import Pricing from "@/components/marketing/pricing";
 
@@ -18,6 +19,9 @@ const HomePage = () => {
             <Companies />
             <div id="ozellikler" className="scroll-mt-24">
                 <Features />
+            </div>
+            <div id="akis" className="scroll-mt-24">
+                <Journey />
             </div>
             <Analysis />
             <div id="mali" className="scroll-mt-24">
