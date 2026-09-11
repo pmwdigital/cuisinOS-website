@@ -1,32 +1,48 @@
-import { BellRingIcon, ChefHatIcon, WalletIcon } from "lucide-react";
+import { BellRingIcon, ChefHatIcon, PackageIcon, ReceiptTextIcon, WalletIcon } from "lucide-react";
 import Container from "../global/container";
 import AssistantChat from "../ui/assistant-chat";
-import DisplayCards, { STACK_POSITIONS } from "../ui/display-cards";
+import { NotificationStack, type NotificationItem } from "../ui/notification-stack";
 
-const EVENT_CARDS = [
+const EVENTS: NotificationItem[] = [
     {
-        icon: <BellRingIcon className="size-3.5" />,
+        id: "siparis",
+        icon: <BellRingIcon className="size-4" />,
         title: "Yeni sipariş",
-        description: "Masa 12, QR menüden 4 kalem",
+        detail: "Masa 12, QR menüden dört kalem geldi",
         meta: "Az önce",
-        tone: "grapefruit" as const,
-        className: STACK_POSITIONS[0],
+        tone: "grapefruit",
     },
     {
-        icon: <ChefHatIcon className="size-3.5" />,
+        id: "mutfak",
+        icon: <ChefHatIcon className="size-4" />,
         title: "Mutfak hazır",
-        description: "Izgara istasyonu, 2 kalem",
+        detail: "Izgara istasyonu iki kalemi servise bıraktı",
         meta: "1 dakika önce",
-        tone: "lemon" as const,
-        className: STACK_POSITIONS[1],
+        tone: "lemon",
     },
     {
-        icon: <WalletIcon className="size-3.5" />,
+        id: "tahsilat",
+        icon: <WalletIcon className="size-4" />,
         title: "Tahsilat tamam",
-        description: "Masa 7, mali fiş kesildi",
+        detail: "Masa 7 kapandı, mali fiş kesildi",
         meta: "3 dakika önce",
-        tone: "mint" as const,
-        className: STACK_POSITIONS[2],
+        tone: "mint",
+    },
+    {
+        id: "stok",
+        icon: <PackageIcon className="size-4" />,
+        title: "Stok uyarısı",
+        detail: "Ayran kritik seviyeye indi, sipariş açın",
+        meta: "8 dakika önce",
+        tone: "grapefruit",
+    },
+    {
+        id: "earsiv",
+        icon: <ReceiptTextIcon className="size-4" />,
+        title: "e-Arşiv kuyruğu boşaldı",
+        detail: "Gün içinde bekleyen fatura kalmadı",
+        meta: "12 dakika önce",
+        tone: "mint",
     },
 ];
 
@@ -58,12 +74,12 @@ const Assistant = () => {
 
                 <Container delay={0.25}>
                     <div className="flex flex-col items-center gap-10 lg:items-start">
-                        <div className="w-full min-h-[16rem] pl-2 sm:pl-8">
-                            <DisplayCards cards={EVENT_CARDS} />
+                        <div className="min-h-[11rem] w-full max-w-sm">
+                            <NotificationStack items={EVENTS} />
                         </div>
                         <p className="max-w-md text-center text-sm text-muted-foreground lg:text-left">
-                            Aynı olaylar bildirim olarak da düşer. Sipariş açıldığında, mutfak hazır dediğinde
-                            ve tahsilat kapandığında ilgili ekip anında görür.
+                            Aynı olaylar bildirim olarak da düşer. Kartı yana kaydırarak kapatabilir,
+                            listeyi boşalana kadar temizleyebilirsiniz.
                         </p>
                     </div>
                 </Container>
