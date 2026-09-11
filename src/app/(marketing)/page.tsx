@@ -11,6 +11,7 @@ import Integration from "@/components/marketing/integration";
 import Journey from "@/components/marketing/journey";
 import LanguageSupport from "@/components/marketing/lang-support";
 import Pricing from "@/components/marketing/pricing";
+import Venues from "@/components/marketing/venues";
 
 const HomePage = () => {
     return (
@@ -32,6 +33,7 @@ const HomePage = () => {
             </div>
             <Assistant />
             <Coverage />
+            <Venues />
             <div id="fiyatlandirma" className="scroll-mt-24">
                 <Pricing />
             </div>
