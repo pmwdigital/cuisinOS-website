@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { CrownIcon } from "lucide-react";
 import { cn } from "@/lib";
 
@@ -9,6 +10,7 @@ export interface LeaderboardRanking {
     userName: string;
     rank: number;
     value: number;
+    avatar?: string;
 }
 
 const currency = new Intl.NumberFormat("tr-TR", {
@@ -31,21 +33,21 @@ export const initialsOf = (name: string) =>
 const STEPS = {
     1: {
         order: "order-2",
-        bar: "h-24 bg-grapefruit",
-        avatar: "size-16 border-grapefruit bg-grapefruit-pale text-grapefruit-dark",
-        label: "text-base",
+        bar: "h-12 bg-grapefruit",
+        avatar: "size-12 border-grapefruit bg-grapefruit-pale text-grapefruit-dark",
+        label: "text-sm",
     },
     2: {
         order: "order-1",
-        bar: "h-16 bg-mint",
-        avatar: "size-12 border-mint bg-mint-pale text-mint-dark",
-        label: "text-sm",
+        bar: "h-9 bg-mint",
+        avatar: "size-10 border-mint bg-mint-pale text-mint-dark",
+        label: "text-xs",
     },
     3: {
         order: "order-3",
-        bar: "h-12 bg-lemon",
-        avatar: "size-12 border-lemon bg-lemon-pale text-chocolate",
-        label: "text-sm",
+        bar: "h-7 bg-lemon",
+        avatar: "size-10 border-lemon bg-lemon-pale text-chocolate",
+        label: "text-xs",
     },
 } as const;
 
@@ -59,7 +61,7 @@ export function LeaderboardPodium({
     const top = [...rankings].sort((a, b) => a.rank - b.rank).slice(0, 3);
 
     return (
-        <div className={cn("flex items-end justify-center gap-3 sm:gap-5", className)}>
+        <div className={cn("flex items-end justify-center gap-3 sm:gap-4", className)}>
             {top.map((entry) => {
                 const step = STEPS[entry.rank as 1 | 2 | 3] ?? STEPS[3];
                 return (
@@ -67,29 +69,39 @@ export function LeaderboardPodium({
                         key={entry.userId}
                         className={cn("flex w-1/3 max-w-[10rem] flex-col items-center", step.order)}
                     >
-                        {entry.rank === 1 && <CrownIcon className="mb-1.5 size-4 text-grapefruit-dark" />}
-                        <span
-                            className={cn(
-                                "flex items-center justify-center rounded-full border-2 font-medium",
-                                step.avatar
-                            )}
-                        >
-                            {initialsOf(entry.userName)}
-                        </span>
+                        {entry.rank === 1 && <CrownIcon className="mb-1 size-3.5 text-grapefruit-dark" />}
+                        {entry.avatar ? (
+                            <Image
+                                src={entry.avatar}
+                                alt=""
+                                width={96}
+                                height={96}
+                                className={cn("rounded-full border-2 object-cover", step.avatar)}
+                            />
+                        ) : (
+                            <span
+                                className={cn(
+                                    "flex items-center justify-center rounded-full border-2 text-xs font-medium",
+                                    step.avatar
+                                )}
+                            >
+                                {initialsOf(entry.userName)}
+                            </span>
+                        )}
                         <p
                             className={cn(
-                                "mt-2.5 line-clamp-1 text-center font-medium leading-none",
+                                "mt-2 line-clamp-1 text-center font-medium leading-none",
                                 step.label
                             )}
                         >
                             {entry.userName}
                         </p>
-                        <p className="mt-1.5 text-xs tabular-nums text-muted-foreground">
+                        <p className="mt-1 text-[11px] tabular-nums text-muted-foreground">
                             {formatLeaderboardValue(entry.value)}
                         </p>
                         <div
                             className={cn(
-                                "mt-3 flex w-full items-start justify-center rounded-t-lg pt-2 text-sm font-medium text-chocolate",
+                                "mt-2 flex w-full items-start justify-center rounded-t-lg pt-1.5 text-xs font-medium text-chocolate",
                                 step.bar
                             )}
                         >

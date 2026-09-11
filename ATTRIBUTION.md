@@ -25,4 +25,7 @@ Ali Dashti, Betül Aydın, Ceylonframes, Cihan Çimen, djvvadi (two photos),
 Kamrujjaman Jewel, Karola G, Luis Yanez, Meruyert Gonullu, Nano Erdozain,
 Saveurs Secretes.
 
-Source files were cropped to 420x595 and converted to WebP.
+Source files were cropped to 420x595 and converted to WebP for the menu
+gallery. The square thumbnails under `public/food/mini` (menu items in the
+phone mockups) and `public/food/sube` (branch rows in the leaderboard) are
+crops of the same photographs.

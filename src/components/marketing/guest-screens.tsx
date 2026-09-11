@@ -1,19 +1,20 @@
 "use client";
 
+import Image from "next/image";
 import { CheckIcon, MinusIcon, PlusIcon, QrCodeIcon } from "lucide-react";
 import Container from "../global/container";
 import { PhoneCarousel, type PhoneScreen } from "../ui/phone-carousel";
 
 const MENU_ITEMS = [
-    { name: "Mercimek çorbası", note: "Günlük, vejetaryen", price: "₺95" },
-    { name: "Adana kebap", note: "Acılı, 180 gr", price: "₺480" },
-    { name: "Fırın sütlaç", note: "Fındıklı", price: "₺160" },
+    { name: "Lahmacun", note: "İnce hamur, salata ile", price: "₺95", image: "/food/mini/lahmacun.webp" },
+    { name: "Döner dürüm", note: "El açması lavaş, acılı", price: "₺240", image: "/food/mini/doner.webp" },
+    { name: "Pilav üstü tavuk", note: "Tereyağlı pirinç pilavı", price: "₺320", image: "/food/mini/pilav.webp" },
 ];
 
 const BASKET = [
-    { name: "Mercimek çorbası", qty: 2, price: "₺190" },
-    { name: "Adana kebap", qty: 1, price: "₺480" },
-    { name: "Ayran", qty: 2, price: "₺80" },
+    { name: "Lahmacun", qty: 2, price: "₺190", image: "/food/mini/lahmacun.webp" },
+    { name: "Döner dürüm", qty: 1, price: "₺240", image: "/food/mini/doner.webp" },
+    { name: "Ayran", qty: 2, price: "₺80", image: "/food/mini/ayran.webp" },
 ];
 
 const STATUS_STEPS = [
@@ -54,7 +55,7 @@ const MenuScreen = () => (
         }
     >
         <div className="flex gap-1 pb-2">
-            {["Çorbalar", "Ana yemek", "Tatlı"].map((group, index) => (
+            {["Ana yemek", "Dürümler", "İçecek"].map((group, index) => (
                 <span
                     key={group}
                     className={`rounded-full px-2 py-1 text-[0.5rem] ${index === 0 ? "bg-chocolate text-cream" : "bg-secondary text-muted-foreground"}`}
@@ -66,7 +67,13 @@ const MenuScreen = () => (
         <div className="space-y-1.5">
             {MENU_ITEMS.map((item) => (
                 <div key={item.name} className="flex items-center gap-2 rounded-lg border border-border p-2">
-                    <span className="size-8 shrink-0 rounded-md bg-secondary" />
+                    <Image
+                        src={item.image}
+                        alt=""
+                        width={80}
+                        height={80}
+                        className="size-8 shrink-0 rounded-md object-cover"
+                    />
                     <div className="min-w-0 flex-1">
                         <p className="truncate text-[0.6rem] font-medium leading-none">{item.name}</p>
                         <p className="mt-1 truncate text-[0.5rem] text-muted-foreground">{item.note}</p>
@@ -101,6 +108,13 @@ const BasketScreen = () => (
                         <span className="text-[0.5rem] tabular-nums">{item.qty}</span>
                         <PlusIcon className="size-2 text-muted-foreground" />
                     </div>
+                    <Image
+                        src={item.image}
+                        alt=""
+                        width={64}
+                        height={64}
+                        className="size-6 shrink-0 rounded object-cover"
+                    />
                     <p className="min-w-0 flex-1 truncate text-[0.6rem]">{item.name}</p>
                     <span className="shrink-0 text-[0.6rem] font-medium tabular-nums">{item.price}</span>
                 </div>
@@ -109,15 +123,15 @@ const BasketScreen = () => (
         <div className="mt-2.5 space-y-1 border-t border-border pt-2 text-[0.55rem]">
             <div className="flex justify-between text-muted-foreground">
                 <span>Ara toplam</span>
-                <span className="tabular-nums">₺750</span>
+                <span className="tabular-nums">₺510</span>
             </div>
             <div className="flex justify-between text-muted-foreground">
                 <span>KDV</span>
-                <span className="tabular-nums">₺75</span>
+                <span className="tabular-nums">₺51</span>
             </div>
             <div className="flex justify-between text-[0.65rem] font-medium">
                 <span>Toplam</span>
-                <span className="tabular-nums">₺825</span>
+                <span className="tabular-nums">₺561</span>
             </div>
         </div>
     </ScreenShell>
@@ -162,7 +176,7 @@ const PaymentScreen = () => (
         <div className="rounded-lg border border-border p-2.5">
             <div className="flex items-baseline justify-between">
                 <span className="text-[0.55rem] text-muted-foreground">Toplam</span>
-                <span className="font-heading text-base font-normal tabular-nums">₺825</span>
+                <span className="font-heading text-base font-normal tabular-nums">₺561</span>
             </div>
             <div className="mt-2 flex gap-1">
                 {["Tek öde", "Bölüş", "Kalem seç"].map((mode, index) => (

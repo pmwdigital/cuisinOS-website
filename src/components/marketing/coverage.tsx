@@ -13,13 +13,14 @@ const BRANCHES = [
     { id: "konak", name: "Konak", byline: "Gel al ağırlıklı", value: 142900 },
     { id: "nilufer", name: "Nilüfer", byline: "Paket ağırlıklı", value: 128400 },
     { id: "muratpasa", name: "Muratpaşa", byline: "Sezonluk salon", value: 117600 },
-];
+].map((branch) => ({ ...branch, avatar: `/food/sube/${branch.id}.webp` }));
 
 const PODIUM = BRANCHES.slice(0, 3).map((branch, index) => ({
     userId: branch.id,
     userName: branch.name,
     rank: index + 1,
     value: branch.value,
+    avatar: branch.avatar,
 }));
 
 const RANKINGS = BRANCHES.map((branch, index) => ({
@@ -28,6 +29,7 @@ const RANKINGS = BRANCHES.map((branch, index) => ({
     userName: branch.name,
     byline: branch.byline,
     value: branch.value,
+    avatar: branch.avatar,
 }));
 
 const POINTS = [
@@ -106,7 +108,7 @@ const Coverage = () => {
             </div>
 
             <Container delay={0.25} className="mt-6">
-                <div className="relative">
+                <div className="relative mx-auto w-full max-w-xl">
                     <LeaderboardCard
                         title="Şube sıralaması"
                         fromDate="2026-09-01"
@@ -115,7 +117,7 @@ const Coverage = () => {
                         rankings={RANKINGS}
                         currentUserId="alsancak"
                     />
-                    <span className="absolute right-6 top-6 rounded-full border border-border bg-secondary px-2.5 py-1 text-[10px] font-medium text-muted-foreground">
+                    <span className="absolute right-5 top-5 rounded-full border border-border bg-secondary px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                         Örnek ekran
                     </span>
                 </div>

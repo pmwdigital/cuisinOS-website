@@ -74,13 +74,13 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
         return (
             <div
                 ref={ref}
-                className={cn("rounded-2xl border border-border bg-card p-6 shadow-sm", className)}
+                className={cn("rounded-2xl border border-border bg-card p-5 shadow-sm", className)}
                 {...props}
             >
-                <div className="mb-6 flex items-start justify-between gap-4">
+                <div className="mb-5 flex items-start justify-between gap-4">
                     <div className="space-y-1">
-                        <h3 className="font-heading text-lg font-medium tracking-tight">{title}</h3>
-                        <p className="text-sm text-muted-foreground">
+                        <h3 className="font-heading text-base font-medium tracking-tight">{title}</h3>
+                        <p className="text-xs text-muted-foreground">
                             {fromLabel} ile {toLabel} arası
                         </p>
                     </div>
@@ -107,7 +107,7 @@ const LeaderboardCard = React.forwardRef<HTMLDivElement, LeaderboardCardProps>(
                     ) : null}
                 </div>
 
-                <LeaderboardPodium rankings={podiumRankings} className="mb-6" />
+                <LeaderboardPodium rankings={podiumRankings} className="mb-5" />
 
                 <LeaderboardRankings
                     rankings={rankings}

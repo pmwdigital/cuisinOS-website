@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { cn } from "@/lib";
 import { formatLeaderboardValue, initialsOf } from "./leaderboard-podium";
@@ -12,6 +13,7 @@ export interface LeaderboardRankingItem {
     byline?: string;
     value: number;
     displayed?: boolean;
+    avatar?: string;
 }
 
 export function LeaderboardRankings({
@@ -44,23 +46,33 @@ export function LeaderboardRankings({
                         <li
                             key={entry.userId}
                             className={cn(
-                                "flex items-center gap-3 rounded-lg px-2 py-2.5 sm:gap-4 sm:px-3",
+                                "flex items-center gap-3 rounded-lg px-2 py-2",
                                 isCurrent && "bg-grapefruit-pale/60"
                             )}
                         >
-                            <span className="w-5 shrink-0 text-sm tabular-nums text-muted-foreground">
+                            <span className="w-4 shrink-0 text-xs tabular-nums text-muted-foreground">
                                 {entry.rank}
                             </span>
-                            <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-xs font-medium">
-                                {initialsOf(entry.userName)}
-                            </span>
+                            {entry.avatar ? (
+                                <Image
+                                    src={entry.avatar}
+                                    alt=""
+                                    width={64}
+                                    height={64}
+                                    className="size-7 shrink-0 rounded-full border border-border object-cover"
+                                />
+                            ) : (
+                                <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-[10px] font-medium">
+                                    {initialsOf(entry.userName)}
+                                </span>
+                            )}
                             <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-medium leading-none">{entry.userName}</p>
+                                <p className="truncate text-[13px] font-medium leading-none">{entry.userName}</p>
                                 {entry.byline && (
-                                    <p className="mt-1 truncate text-xs text-muted-foreground">{entry.byline}</p>
+                                    <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{entry.byline}</p>
                                 )}
                             </div>
-                            <span className="shrink-0 text-sm font-medium tabular-nums">
+                            <span className="shrink-0 text-[13px] font-medium tabular-nums">
                                 {formatLeaderboardValue(entry.value)}
                             </span>
                         </li>
@@ -69,7 +81,7 @@ export function LeaderboardRankings({
             </ul>
 
             {showPagination && pageCount > 1 && (
-                <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
+                <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
                     <button
                         type="button"
                         onClick={() => setPage((value) => Math.max(0, value - 1))}
