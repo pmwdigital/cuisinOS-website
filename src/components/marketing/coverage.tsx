@@ -1,7 +1,34 @@
 import { BuildingIcon, GaugeIcon, LayersIcon } from "lucide-react";
 import Container from "../global/container";
 import { CITIES } from "@/constants/cities";
+import { LeaderboardCard } from "../ui/leaderboard-card";
 import TurkeyGlobe from "../ui/turkey-globe";
+
+const BRANCHES = [
+    { id: "kadikoy", name: "Kadıköy", byline: "Salon ağırlıklı, 42 masa", value: 289400 },
+    { id: "besiktas", name: "Beşiktaş", byline: "Salon ve paket karışık", value: 251800 },
+    { id: "nisantasi", name: "Nişantaşı", byline: "Salon ağırlıklı, 28 masa", value: 238300 },
+    { id: "cankaya", name: "Çankaya", byline: "Paket ağırlıklı", value: 198700 },
+    { id: "alsancak", name: "Alsancak", byline: "Salon ve gel al", value: 156200 },
+    { id: "konak", name: "Konak", byline: "Gel al ağırlıklı", value: 142900 },
+    { id: "nilufer", name: "Nilüfer", byline: "Paket ağırlıklı", value: 128400 },
+    { id: "muratpasa", name: "Muratpaşa", byline: "Sezonluk salon", value: 117600 },
+];
+
+const PODIUM = BRANCHES.slice(0, 3).map((branch, index) => ({
+    userId: branch.id,
+    userName: branch.name,
+    rank: index + 1,
+    value: branch.value,
+}));
+
+const RANKINGS = BRANCHES.map((branch, index) => ({
+    userId: branch.id,
+    rank: index + 1,
+    userName: branch.name,
+    byline: branch.byline,
+    value: branch.value,
+}));
 
 const POINTS = [
     {
@@ -77,6 +104,22 @@ const Coverage = () => {
                 </Container>
 
             </div>
+
+            <Container delay={0.25} className="mt-6">
+                <div className="relative">
+                    <LeaderboardCard
+                        title="Şube sıralaması"
+                        fromDate="2026-09-01"
+                        toDate="2026-09-07"
+                        podiumRankings={PODIUM}
+                        rankings={RANKINGS}
+                        currentUserId="alsancak"
+                    />
+                    <span className="absolute right-6 top-6 rounded-full border border-border bg-secondary px-2.5 py-1 text-[10px] font-medium text-muted-foreground">
+                        Örnek ekran
+                    </span>
+                </div>
+            </Container>
         </div>
     );
 };
