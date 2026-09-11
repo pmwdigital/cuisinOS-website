@@ -20,7 +20,27 @@ interface CardTarget {
     opacity: number;
 }
 
-const FlipCard = ({ src, index, target }: { src: string; index: number; target: CardTarget }) => (
+const FlipCard = ({
+    src,
+    index,
+    target,
+    settled,
+    flipEnabled,
+}: {
+    src: string;
+    index: number;
+    target: CardTarget;
+    settled: boolean;
+    flipEnabled: boolean;
+}) => {
+    const [hovered, setHovered] = React.useState(false);
+    const flipped = hovered && flipEnabled && target.opacity > 0.5;
+
+    React.useEffect(() => {
+        if (!flipEnabled) setHovered(false);
+    }, [flipEnabled]);
+
+    return (
     <motion.div
         animate={{
             x: target.x,
@@ -29,7 +49,13 @@ const FlipCard = ({ src, index, target }: { src: string; index: number; target: 
             scale: target.scale,
             opacity: target.opacity,
         }}
-        transition={{ type: "spring", stiffness: 40, damping: 15 }}
+        transition={
+            settled
+                ? { type: "tween", duration: 0.08, ease: "linear" }
+                : { type: "spring", stiffness: 70, damping: 18 }
+        }
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         style={{
             position: "absolute",
             left: "50%",
@@ -40,14 +66,16 @@ const FlipCard = ({ src, index, target }: { src: string; index: number; target: 
             height: CARD_HEIGHT,
             transformStyle: "preserve-3d",
             perspective: 1000,
+            zIndex: flipped ? 40 : 20,
+            pointerEvents: target.opacity > 0.5 ? "auto" : "none",
         }}
         className="group"
     >
         <motion.div
             className="relative h-full w-full"
             style={{ transformStyle: "preserve-3d" }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            whileHover={{ rotateY: 180 }}
+            animate={{ rotateY: flipped ? 180 : 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 24 }}
         >
             <div
                 className="absolute inset-0 h-full w-full overflow-hidden rounded-xl bg-secondary shadow-lg shadow-chocolate/10"
@@ -75,7 +103,8 @@ const FlipCard = ({ src, index, target }: { src: string; index: number; target: 
         </motion.div>
         <span className="sr-only">{`Menü fotoğrafı ${index + 1}`}</span>
     </motion.div>
-);
+    );
+};
 
 export function ScrollMorphGallery({
     images,
@@ -96,16 +125,18 @@ export function ScrollMorphGallery({
     const [introPhase, setIntroPhase] = React.useState<IntroPhase>("scatter");
     const [stageSize, setStageSize] = React.useState({ width: 0, height: 0 });
     const [frame, setFrame] = React.useState({ morph: 0, shuffle: 0, parallax: 0 });
+    const [flipEnabled, setFlipEnabled] = React.useState(true);
+    const [canHover, setCanHover] = React.useState(false);
 
     const { scrollYProgress } = useScroll({ target: trackRef });
 
     const morph = useTransform(scrollYProgress, [0.06, 0.44], [0, 1]);
     const shuffle = useTransform(scrollYProgress, [0.46, 0.96], [0, 1]);
-    const smoothMorph = useSpring(morph, { stiffness: 60, damping: 22 });
-    const smoothShuffle = useSpring(shuffle, { stiffness: 60, damping: 22 });
+    const smoothMorph = useSpring(morph, { stiffness: 120, damping: 26 });
+    const smoothShuffle = useSpring(shuffle, { stiffness: 120, damping: 26 });
 
     const pointerX = useMotionValue(0);
-    const smoothPointerX = useSpring(pointerX, { stiffness: 30, damping: 20 });
+    const smoothPointerX = useSpring(pointerX, { stiffness: 90, damping: 22 });
 
     React.useEffect(() => {
         const stage = stageRef.current;
@@ -139,13 +170,37 @@ export function ScrollMorphGallery({
     }, []);
 
     React.useEffect(() => {
+        const query = window.matchMedia("(hover: hover) and (pointer: fine)");
+        const update = () => setCanHover(query.matches);
+        update();
+        query.addEventListener("change", update);
+        return () => query.removeEventListener("change", update);
+    }, []);
+
+    React.useEffect(() => {
+        let timeout = 0;
+
+        const handleScroll = () => {
+            setFlipEnabled((current) => (current ? false : current));
+            window.clearTimeout(timeout);
+            timeout = window.setTimeout(() => setFlipEnabled(true), 180);
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.clearTimeout(timeout);
+        };
+    }, []);
+
+    React.useEffect(() => {
         const stage = stageRef.current;
         if (!stage) return;
 
         const handleMove = (event: MouseEvent) => {
             const rect = stage.getBoundingClientRect();
             const normalized = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            pointerX.set(normalized * 70);
+            pointerX.set(normalized * 26);
         };
 
         stage.addEventListener("mousemove", handleMove);
@@ -200,10 +255,21 @@ export function ScrollMorphGallery({
     const circleRadius = Math.min(minDimension * 0.38, 330);
     const arcRadius = Math.min(stageSize.width, stageSize.height * 1.5) * (isNarrow ? 2.2 : 0.9);
     const arcCenterY = stageSize.height * (isNarrow ? 0.14 : 0.06) + arcRadius;
-    const spreadAngle = isNarrow ? 74 : 90;
+    const spreadAngle = isNarrow ? 74 : 80;
     const startAngle = -90 - spreadAngle / 2;
     const step = total > 1 ? spreadAngle / (total - 1) : 0;
     const boundedRotation = -frame.shuffle * spreadAngle * 0.3;
+
+    const cardReach = isNarrow ? 62 : 95;
+    const fadeBand = isNarrow ? 55 : 105;
+    const fadeEnd = Math.max(stageSize.width / 2 - cardReach, 0);
+    const fadeStart = Math.max(fadeEnd - fadeBand, 0);
+    const edgeOpacity = (x: number) => {
+        const distance = Math.abs(x);
+        if (distance <= fadeStart) return 1;
+        if (distance >= fadeEnd) return 0;
+        return 1 - (distance - fadeStart) / (fadeEnd - fadeStart);
+    };
 
     const introOpacity = Math.max(0, 1 - frame.morph * 2.2);
     const arcOpacity = Math.max(0, Math.min(1, (frame.morph - 0.7) / 0.3));
@@ -262,16 +328,27 @@ export function ScrollMorphGallery({
                             const arcX = Math.cos(arcRad) * arcRadius + frame.parallax;
                             const arcY = Math.sin(arcRad) * arcRadius + arcCenterY;
 
+                            const finalX = lerp(circleX, arcX, frame.morph);
+
                             target = {
-                                x: lerp(circleX, arcX, frame.morph),
+                                x: finalX,
                                 y: lerp(circleY, arcY, frame.morph),
                                 rotation: lerp(circleAngle + 90, arcAngle + 90, frame.morph),
                                 scale: lerp(1, isNarrow ? 1.25 : 2, frame.morph),
-                                opacity: 1,
+                                opacity: canHover ? lerp(1, edgeOpacity(finalX), frame.morph) : 1,
                             };
                         }
 
-                        return <FlipCard key={src} src={src} index={index} target={target} />;
+                        return (
+                            <FlipCard
+                                key={src}
+                                src={src}
+                                index={index}
+                                target={target}
+                                settled={introPhase === "circle"}
+                                flipEnabled={flipEnabled}
+                            />
+                        );
                     })}
                 </div>
             </div>
