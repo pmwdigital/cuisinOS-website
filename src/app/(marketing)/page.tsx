@@ -11,6 +11,7 @@ import Hero from "@/components/marketing/hero";
 import Integration from "@/components/marketing/integration";
 import Journey from "@/components/marketing/journey";
 import LanguageSupport from "@/components/marketing/lang-support";
+import MenuGallery from "@/components/marketing/menu-gallery";
 import Pricing from "@/components/marketing/pricing";
 import Scenarios from "@/components/marketing/scenarios";
 import Venues from "@/components/marketing/venues";
@@ -23,6 +24,7 @@ const HomePage = () => {
             <div id="ozellikler" className="scroll-mt-24">
                 <Features />
             </div>
+            <MenuGallery />
             <GuestScreens />
             <div id="akis" className="scroll-mt-24">
                 <Journey />

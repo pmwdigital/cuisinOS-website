@@ -13,3 +13,16 @@ ours and the licence below is the one it shipped with.
 
 If you are the author and want this listing changed or removed, write to
 support@21st.dev and it is done the same day.
+
+
+## Menu photographs
+
+The plate photographs under `public/food` come from Pexels and are used
+under the Pexels licence, which allows free commercial use without
+attribution. Original photographers, in file order:
+
+Ali Dashti, Betül Aydın, Ceylonframes, Cihan Çimen, djvvadi (two photos),
+Kamrujjaman Jewel, Karola G, Luis Yanez, Meruyert Gonullu, Nano Erdozain,
+Saveurs Secretes.
+
+Source files were cropped to 420x595 and converted to WebP.
